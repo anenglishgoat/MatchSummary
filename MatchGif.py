@@ -244,7 +244,7 @@ def makeMatchSummary(home_team_name,  # string (should agree with understat nami
     ax.text(0, ymax + 0.53, 'Pre-match prediction',
             fontsize=3, ha='center', va='top')
     ax.text(0, ymax + 0.07,
-            "%.3g" % home_score_pre_match + ' - ' + "%.3g" % away_score_pre_match,
+            "%.2f" % home_score_pre_match + ' - ' + "%.2f" % away_score_pre_match,
             fontsize=6, ha='center', va='bottom')
 
     pre_match_widths = 0.3 * pre_match_probs
@@ -283,7 +283,7 @@ def makeMatchSummary(home_team_name,  # string (should agree with understat nami
     ax.text(1, ymax + 0.53, 'Post-match xG',
             fontsize=3, ha='center', va='top')
     ax.text(1, ymax + 0.07,
-            "%.3g" % ensemble_xg[0] + ' - ' + "%.3g" % ensemble_xg[1],
+            "%.2f" % ensemble_xg[0] + ' - ' + "%.2f" % ensemble_xg[1],
             fontsize=6, ha='center', va='bottom')
 
     xg_widths = 0.3 * xg_probs
