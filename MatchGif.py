@@ -50,6 +50,8 @@ def makeMatchSummary(home_team_name,  # string (should agree with understat nami
         c = odds.split('/')
         odds_string[k] = float(c[1]) / (float(c[0]) + float(c[1]))
 
+    odds_string = odds_string / np.sum(odds_string)
+
     home_score_pre_match = np.sum(ho_s * odds_string)
     away_score_pre_match = np.sum(aw_s * odds_string)
 
@@ -316,6 +318,7 @@ def makeMatchSummary(home_team_name,  # string (should agree with understat nami
             "%.3g" % (100 * xg_probs[2]) + '%',
             fontsize=2.75, ha='right', va='center', c=away_colour)
 
+
     ## Match stats panel (bottom)
 
     ax.add_patch(plt.Rectangle((-0.25, ymax / 2 - 0.05 - 1), 1.5, 1, fill=False))
@@ -327,12 +330,10 @@ def makeMatchSummary(home_team_name,  # string (should agree with understat nami
     ax.text(1, ymax / 2 - 0.55, 'Deep completions',
             ha='center', va='center', fontsize=5)
 
-    ax.text(0.25, ymax / 2 - 0.1, "Team's season avg.",
+    ax.text(0.5, ymax / 2 - 0.1, "Team's season avg.",
             ha='center', va='center', fontsize=3.5, color='seagreen')
-    ax.text(0.5, ymax / 2 - 0.1, "Avg. allowed by today's opp.",
+    ax.text(0.5, ymax / 2 - 0.2, "Avg. allowed by today's opp.",
             ha='center', va='center', fontsize=3.5, color='firebrick')
-    ax.text(0.75, ymax / 2 - 0.1, 'This game',
-            ha='center', va='center', fontsize=3.5, color='darkkhaki')
 
     ax.add_patch(plt.Rectangle((-0.2, ymax / 2 - 0.05 - 0.8), 0.4, 0.2, fill=False, color=away_colour))
     ax.add_patch(plt.Rectangle((-0.2, ymax / 2 - 0.05 - 0.4), 0.4, 0.2, fill=False, color=home_colour))
@@ -347,7 +348,7 @@ def makeMatchSummary(home_team_name,  # string (should agree with understat nami
 
     ax.add_patch(
         plt.Rectangle((-0.2, ymax / 2 - 0.05 - 0.4), ppda_this_match_h * 0.4, 0.2,
-                      color='darkkhaki', zorder=-15, alpha=0.75))
+                      color=home_colour, zorder=-15, alpha=0.3))
     plt.plot([-0.2 + ppda_avg_h * 0.4, -0.2 + ppda_avg_h * 0.4],
              [ymax / 2 - 0.05 - 0.2, ymax / 2 - 0.05 - 0.4],
              c='seagreen', linewidth=2, alpha=1)
@@ -361,7 +362,7 @@ def makeMatchSummary(home_team_name,  # string (should agree with understat nami
 
     ax.add_patch(
         plt.Rectangle((-0.2, ymax / 2 - 0.05 - 0.8), ppda_this_match_a * 0.4, 0.2,
-                      color='darkkhaki', zorder=-15, alpha=0.75))
+                      color=away_colour, zorder=-15, alpha=0.3))
 
     plt.plot([-0.2 + ppda_avg_a * 0.4, -0.2 + ppda_avg_a * 0.4],
              [ymax / 2 - 0.05 - 0.8, ymax / 2 - 0.05 - 0.6],
@@ -381,7 +382,7 @@ def makeMatchSummary(home_team_name,  # string (should agree with understat nami
 
     ax.add_patch(
         plt.Rectangle((0.3, ymax / 2 - 0.05 - 0.4), passes_this_match_h * 0.4, 0.2,
-                      color='darkkhaki', zorder=-15, alpha=0.75))
+                      color=home_colour, zorder=-15, alpha=0.3))
     plt.plot([0.3 + passes_avg_h * 0.4, 0.3 + passes_avg_h * 0.4],
              [ymax / 2 - 0.05 - 0.2, ymax / 2 - 0.05 - 0.4],
              c='seagreen', linewidth=2, alpha=1)
@@ -395,7 +396,7 @@ def makeMatchSummary(home_team_name,  # string (should agree with understat nami
 
     ax.add_patch(
         plt.Rectangle((0.3, ymax / 2 - 0.05 - 0.8), passes_this_match_a * 0.4, 0.2,
-                      color='darkkhaki', zorder=-15, alpha=0.75))
+                      color=away_colour, zorder=-15, alpha=0.3))
     plt.plot([0.3 + passes_avg_a * 0.4, 0.3 + passes_avg_a * 0.4],
              [ymax / 2 - 0.05 - 0.8, ymax / 2 - 0.05 - 0.6],
              c='seagreen', linewidth=2, alpha=1)
@@ -414,7 +415,7 @@ def makeMatchSummary(home_team_name,  # string (should agree with understat nami
 
     ax.add_patch(
         plt.Rectangle((0.8, ymax / 2 - 0.05 - 0.4), deep_this_match_h * 0.4, 0.2,
-                      color='darkkhaki', zorder=-15, alpha=0.75))
+                      color=home_colour, zorder=-15, alpha=0.3))
     plt.plot([0.8 + deep_avg_h * 0.4, 0.8 + deep_avg_h * 0.4], [ymax / 2 - 0.05 - 0.2, ymax / 2 - 0.05 - 0.4],
              c='seagreen', linewidth=2, alpha=1)
     plt.plot([0.8 + deep_avg_h_oppo * 0.4, 0.8 + deep_avg_h_oppo * 0.4],
@@ -427,7 +428,7 @@ def makeMatchSummary(home_team_name,  # string (should agree with understat nami
 
     ax.add_patch(
         plt.Rectangle((0.8, ymax / 2 - 0.05 - 0.8), deep_this_match_a * 0.4, 0.2,
-                      color='darkkhaki', zorder=-15, alpha=0.75))
+                      color=away_colour, zorder=-15, alpha=0.3))
     plt.plot([0.8 + deep_avg_a * 0.4, 0.8 + deep_avg_a * 0.4],
              [ymax / 2 - 0.05 - 0.8, ymax / 2 - 0.05 - 0.6],
              c='seagreen', linewidth=2, alpha=1)
