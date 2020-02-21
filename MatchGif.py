@@ -31,6 +31,7 @@ def makeMatchSummary(home_team_name,  # string (should agree with understat nami
     import imageio
     import matplotlib as mpl
     import os
+    from scipy.optimize import newton
 
     correct_score_odds = pd.read_csv(correct_score_odds_csv_path,
                                      header=None)
@@ -50,7 +51,11 @@ def makeMatchSummary(home_team_name,  # string (should agree with understat nami
         c = odds.split('/')
         odds_string[k] = float(c[1]) / (float(c[0]) + float(c[1]))
 
-    odds_string = odds_string / np.sum(odds_string)
+    ## use the 'logarithm method' of Joseph Buchdal to estimate true correct score probs
+
+    fn = lambda n: np.sum(odds_string ** n) - 1
+    n_opt = newton(fn,1)
+    odds_string = odds_string**n_opt
 
     home_score_pre_match = np.sum(ho_s * odds_string)
     away_score_pre_match = np.sum(aw_s * odds_string)
@@ -60,7 +65,9 @@ def makeMatchSummary(home_team_name,  # string (should agree with understat nami
     draw_prob = draw_odds[1] / (draw_odds[0] + draw_odds[1])
 
     pre_match_probs = np.array([home_win_prob, draw_prob, away_win_prob])
-    pre_match_probs = pre_match_probs / np.sum(pre_match_probs)
+    fn = lambda n: np.sum(pre_match_probs ** n) - 1
+    n_opt = newton(fn, 1)
+    pre_match_probs = pre_match_probs ** n_opt
 
     res_h = []
 
